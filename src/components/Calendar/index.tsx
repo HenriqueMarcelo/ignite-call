@@ -11,6 +11,16 @@ import {
   CalendarTitle,
 } from './styles'
 
+interface CalendarWeek {
+  week: number
+  days: Array<{
+    date: dayjs.Dayjs
+    disabled: boolean
+  }>
+}
+
+type CalendarWeeks = CalendarWeek[]
+
 export function Calendar() {
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
@@ -60,14 +70,36 @@ export function Calendar() {
       return lastDayInCurrentMonth.add(i + 1, 'day')
     })
 
-    return [
-      ...previousMonthFillArray,
-      ...daysInMonthArray,
-      ...nextMonthFillArray,
+    const calendarDays = [
+      ...previousMonthFillArray.map((date) => {
+        return { date, disabled: true }
+      }),
+      ...daysInMonthArray.map((date) => {
+        return { date, disabled: false }
+      }),
+      ...nextMonthFillArray.map((date) => {
+        return { date, disabled: true }
+      }),
     ]
-  }, [currentDate])
 
-  console.log(calendarWeeks)
+    const calendarWeeks = calendarDays.reduce<CalendarWeeks>(
+      (weeks, _, i, original) => {
+        const isNewWeek = i % 7 === 0
+
+        if (isNewWeek) {
+          weeks.push({
+            week: i / 7 + 1,
+            days: original.slice(i, i + 7),
+          })
+        }
+
+        return weeks
+      },
+      [],
+    )
+
+    return calendarWeeks
+  }, [currentDate])
 
   return (
     <CalendarContainer>
@@ -94,113 +126,21 @@ export function Calendar() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-              <CalendarDay>1</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay disabled>2</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>3</CalendarDay>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <CalendarDay>4</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>5</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>6</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>7</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>8</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>9</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>10</CalendarDay>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <CalendarDay>11</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>12</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>13</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>14</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>15</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>16</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>17</CalendarDay>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <CalendarDay>18</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>19</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>20</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>21</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>22</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>23</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>24</CalendarDay>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <CalendarDay>25</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>26</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>27</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>28</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>29</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>30</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>31</CalendarDay>
-            </td>
-          </tr>
+          {calendarWeeks.map(({ days, week }) => {
+            return (
+              <tr key={week}>
+                {days.map(({ date, disabled }) => {
+                  return (
+                    <td key={date.toString()}>
+                      <CalendarDay disabled={disabled}>
+                        {date.get('date')}
+                      </CalendarDay>
+                    </td>
+                  )
+                })}
+              </tr>
+            )
+          })}
         </tbody>
       </CalendarBody>
     </CalendarContainer>
