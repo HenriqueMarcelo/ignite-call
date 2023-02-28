@@ -1,4 +1,4 @@
-import { Avatar, Heading, Text } from '@ignite-ui/react'
+import { Avatar, Heading, Text } from '@hrq-ignite-ui/react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 import { prisma } from '../../../lib/prisma'

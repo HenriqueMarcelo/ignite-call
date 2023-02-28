@@ -6,7 +6,7 @@ import {
   MultiStep,
   Text,
   TextInput,
-} from '@ignite-ui/react'
+} from '@hrq-ignite-ui/react'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { ArrowRight } from 'phosphor-react'

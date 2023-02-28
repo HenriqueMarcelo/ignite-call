@@ -8,7 +8,7 @@ import {
   MultiStep,
   Text,
   TextArea,
-} from '@ignite-ui/react'
+} from '@hrq-ignite-ui/react'
 import { GetServerSideProps } from 'next'
 import { useSession } from 'next-auth/react'
 import { ArrowRight } from 'phosphor-react'

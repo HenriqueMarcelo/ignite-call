@@ -1,4 +1,4 @@
-import { Button, Text, TextInput } from '@ignite-ui/react'
+import { Button, Text, TextInput } from '@hrq-ignite-ui/react'
 import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'

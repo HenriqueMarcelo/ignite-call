@@ -1,4 +1,4 @@
-import { Button, Heading, MultiStep, Text } from '@ignite-ui/react'
+import { Button, Heading, MultiStep, Text } from '@hrq-ignite-ui/react'
 import { signIn, useSession } from 'next-auth/react'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
